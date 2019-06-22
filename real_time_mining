@@ -1,0 +1,37 @@
+This code is used for real_time Twitter data mining.
+In this big data epic, we always wants to get as much as data we could. Twitter, becasue of its assessability, has become
+one of the most popular data mining resource. 
+To get the real_time Tweets, there are many different python packages such as Tweepy.
+This code is using Tweepy to mine Twitter data.
+@@ The refrence came from online resource @@ 
+# the first part is we need use OAuth interface to authorise our app to access twitter
+# consume:
+consumer_key = "YOUR OWN KEY"
+consumer_secret = "YOUR OWN SECRET"
+
+# access:
+access_token = "YOUR OWN ACCESS TOKEN"
+access_token_secret = "YOUR OWN ACCESS TOKEN SECRET"
+
+# setup access API
+auth = tweepy.OAuthHandler (consumer_key, consumer_secret)
+auth.set_access_token (access_token, access_token_secret)
+api = tweepy.API (auth)
+
+# open/create a file to append data
+file = open('twitter.csv', 'a')
+filewte = csv.writer (file)
+# I can just track back less than 30 days
+date_from = "2019-06-10" (you need to set to the current time)
+# I will use cursor fucntion to do the job
+search = tweepy.Cursor(api.search,
+                       q = 'hot weather OR wild fire',
+                       lang = 'en',
+                       since =date_from).items (2000)
+for item in search:
+    print (item.text)
+    print (item.created_at)
+    print (item.retweet_count)
+    print (item.user.name)
+    print (item.user.location)
+    filewte.writerow([item.text, item.created_at, item.user.name, item.user.location])
